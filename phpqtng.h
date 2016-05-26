@@ -4,7 +4,7 @@
 using namespace std;
 
 #include <phpcpp.h>
-
+#include <QDebug>
 
 #define QNAME(x) Qt_##x
 #define PHPQTNG_CONSTRUCT(QtClass) 	void QNAME(QtClass)::__construct(Php::Parameters &params)

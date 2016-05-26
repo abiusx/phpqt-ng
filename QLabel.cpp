@@ -3,7 +3,6 @@
 void ME::__construct(Php::Parameters &params)
 {   
 
-
     if (params.size()==1 and params[0].type()==Php::Type::String)
         q=new QLabel( QString(params[0]) );
     else if (params.size()==1 and params[0].type()==Php::Type::Object)
@@ -31,10 +30,12 @@ void ME::__set(const Php::Value &name, const Php::Value &value)
 Php::Value ME::__call(const char *_name, Php::Parameters &params)
 {
     string name(_name);
-    if (name=="show")
+    // if (name=="show")
+    if (0==strcmp(_name,"show"))
         q->show();
     else
         return Php::Base::__call(_name,params);
+    return nullptr;
 }
 
 Php::Value ME::__callStatic(const char *_name, Php::Parameters &params)

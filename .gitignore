@@ -20,3 +20,4 @@ config*
 
 *.sublime*
 *.so
+qt-test
