@@ -6,7 +6,8 @@ using namespace std;
 #include <phpcpp.h>
 #include <QDebug>
 
-#define QNAME(x) Qt_##x
+#define CONCAT(x,y) x##y
+#define QNAME(x) CONCAT(Qt_,x)
 #define PHPQTNG_CONSTRUCT(QtClass) 	void QNAME(QtClass)::__construct(Php::Parameters &params)
 
 #define PHPQTNG_GET_BEGIN(QtClass) 		void Php::Value QNAME(QtClass)::__get(const Php::Value &name) {
@@ -18,6 +19,7 @@ using namespace std;
 
 #define PARAM_QOBJECT(param)  (QObject *)(((QNAME(QObject) *)param.implementation())->q)
 #define PARAM_QWIDGET(param)  (QWidget *)(((QNAME(QWidget) *)param.implementation())->q)
+#define PARAM_QTYPE(type,param)  (type *)(((QNAME(type) *)param.implementation())->q)
 
 
 #define PHPQTNG_CLASS_NODELETE(QtClass) \
@@ -30,8 +32,16 @@ public: \
 	Php::Value __get(const Php::Value &name); \
 	void __set(const Php::Value &name, const Php::Value &value); \
 	Php::Value __call(const char *name, Php::Parameters &params); \
-	static Php::Value __callStatic(const char *name, Php::Parameters &params); \
+    static Php::Value __callStatic(const char *name, Php::Parameters &params); \
 
+    //     return QNAME(QtClass)::call(string(name),params,this); \
+    // } \
+    // static Php::Value call(const string name, Php::Parameters &params, QNAME(QtClass) *obj); \
+    // Php::Value baseCall(const string name, Php::Parameters &params) { \
+    //     return Php::Base::__call(name.c_str(),params); \
+    // } \
+    // 
+    
 #define PHPQTNG_CLASS_STUB_NODELETE(QtClass)  PHPQTNG_CLASS_NODELETE(QtClass) };
 
 #define PHPQTNG_CLASS(QtClass) PHPQTNG_CLASS_NODELETE(QtClass) \
@@ -50,17 +60,32 @@ public: \
 class PHPQtNgBase:public Php::Base
 {
 	public:
+    Php::Value __call(const char *name, Php::Parameters &params)
+    {
+        return Php::Base::__call(name,params);
+    }
+
 };
+typedef PHPQtNgBase PhpQtNgBase;
 
 #include <QObject>
 PHPQTNG_CLASS_STUB_NODELETE(QObject);
+
 #include <QObject>
 PHPQTNG_CLASS_STUB_NODELETE(QWidget);
+
 #include <QApplication>
 PHPQTNG_CLASS(QApplication)
 	int argc;
 };
+
 #include <QLabel>
 PHPQTNG_CLASS_STUB(QLabel);
+
+#include <QPushButton>
+PHPQTNG_CLASS_STUB(QPushButton);
+
+#include <QVBoxLayout>
+PHPQTNG_CLASS_STUB(QVBoxLayout);
 
 #endif

@@ -1,5 +1,9 @@
 #include "phpqtng.h"
-#define ME QNAME(QLabel)
+#define QtParentClass QWidget
+#define QtClass QLabel
+
+#define ME QNAME(QtClass)
+#define PARENT QNAME(QtParentClass)
 void ME::__construct(Php::Parameters &params)
 {   
 
@@ -29,12 +33,11 @@ void ME::__set(const Php::Value &name, const Php::Value &value)
 }
 Php::Value ME::__call(const char *_name, Php::Parameters &params)
 {
-    string name(_name);
-    // if (name=="show")
-    if (0==strcmp(_name,"show"))
+    string name=_name;
+    if (name=="show")
         q->show();
     else
-        return Php::Base::__call(_name,params);
+        return PhpQtNgBase::__call(_name,params);
     return nullptr;
 }
 

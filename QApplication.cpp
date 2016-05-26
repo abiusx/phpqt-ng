@@ -1,6 +1,9 @@
 #include "phpqtng.h"
-using namespace std;
-#define ME QNAME(QApplication)
+#define QtParentClass QObject
+#define QtClass QApplication
+
+#define ME QNAME(QtClass)
+#define PARENT QNAME(QtParentClass)
 void ME::__construct(Php::Parameters &params)
 {   
     argc=params[0];
@@ -43,11 +46,11 @@ void ME::__set(const Php::Value &name, const Php::Value &value)
 }
 Php::Value ME::__call(const char *_name, Php::Parameters &params)
 {
-    string name(_name);
+    string name=_name;
     if (name=="exec")
         return q->exec();
     else
-        return Php::Base::__call(_name,params);
+        return PhpQtNgBase::__call(_name,params);
 }
 
 Php::Value ME::__callStatic(const char *_name, Php::Parameters &params)

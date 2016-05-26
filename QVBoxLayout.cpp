@@ -1,15 +1,16 @@
 #include "phpqtng.h"
-// #define QtParentClass QWidget
-#define QtClass QObject
+#define QtParentClass QObject
+#define QtClass QVBoxLayout
 
 #define ME QNAME(QtClass)
-
+#define PARENT QNAME(QtParentClass)
 void ME::__construct(Php::Parameters &params)
 {   
-    if (params.size()==1 and params[0].type()==Php::Type::Object)
-        q=new QObject(PARAM_QOBJECT(params[0]));
+
+    if (params.size()==1)
+        q=new QVBoxLayout( PARAM_QWIDGET(params[0]) );
     else
-        q=new QObject();
+        q=new QVBoxLayout();
 
 }
 Php::Value ME::__get(const Php::Value &name)
@@ -22,10 +23,17 @@ void ME::__set(const Php::Value &name, const Php::Value &value)
     
     Php::Base::__set(name,value);
 }
+
 Php::Value ME::__call(const char *_name, Php::Parameters &params)
 {
-    return PhpQtNgBase::__call(_name,params);
+    string name=_name;
+    if (name=="addWidget")
+        q->addWidget(PARAM_QWIDGET(params[0]));
+    else
+        return PhpQtNgBase::__call(_name,params);
+    return nullptr;
 }
+
 Php::Value ME::__callStatic(const char *_name, Php::Parameters &params)
 {
     // for (auto &param : params)
