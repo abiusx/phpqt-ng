@@ -19,3 +19,4 @@ config*
 !config.m4
 
 *.sublime*
+*.so
