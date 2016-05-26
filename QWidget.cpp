@@ -1,8 +1,10 @@
 #include "phpqtng.h"
-// #define QtParentClass QWidget
+#define QtParentClass QObject
 #define QtClass QWidget
 
 #define ME QNAME(QWidget)
+#define PARENT QNAME(QtParentClass)
+
 void ME::__construct(Php::Parameters &params)
 {
 
@@ -24,15 +26,14 @@ void ME::__set(const Php::Value &name, const Php::Value &value)
     
     Php::Base::__set(name,value);
 }
-Php::Value ME::__call(const char *_name, Php::Parameters &params)
+Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 {
-    string name=_name;
     if (name=="show")
         q->show();
     else if (name=="setLayout")
         q->setLayout(PARAM_QTYPE(QVBoxLayout,params[0]));
     else
-        return PhpQtNgBase::__call(_name,params);
+        return PARENT::call(name,params,q);
     return nullptr;
 }
 Php::Value ME::__callStatic(const char *_name, Php::Parameters &params)

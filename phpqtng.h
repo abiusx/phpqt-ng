@@ -6,6 +6,19 @@ using namespace std;
 #include <phpcpp.h>
 #include <QDebug>
 
+class MethodNotFound: public exception {
+    public:
+    /**
+     *  Constructor
+     */
+    MethodNotFound() : std::exception() {}
+    
+    /**
+     *  Destructor
+     */
+    virtual ~MethodNotFound() throw() {}
+};
+
 #define CONCAT(x,y) x##y
 #define QNAME(x) CONCAT(Qt_,x)
 #define PHPQTNG_CONSTRUCT(QtClass) 	void QNAME(QtClass)::__construct(Php::Parameters &params)
@@ -31,9 +44,12 @@ public: \
     void __construct(Php::Parameters &params); \
 	Php::Value __get(const Php::Value &name); \
 	void __set(const Php::Value &name, const Php::Value &value); \
-	Php::Value __call(const char *name, Php::Parameters &params); \
+	Php::Value __call(const char *_name, Php::Parameters &params) { \
+        string name=_name; \
+        return QNAME(QtClass)::call(name,params,q); \
+    } \
     static Php::Value __callStatic(const char *name, Php::Parameters &params); \
-
+    static Php::Value call(const string name, Php::Parameters &params, QtClass *q);
     //     return QNAME(QtClass)::call(string(name),params,this); \
     // } \
     // static Php::Value call(const string name, Php::Parameters &params, QNAME(QtClass) *obj); \
@@ -60,9 +76,12 @@ public: \
 class PHPQtNgBase:public Php::Base
 {
 	public:
-    Php::Value __call(const char *name, Php::Parameters &params)
+    static Php::Value call(const string name, Php::Parameters &params, void *q=0)
     {
-        return Php::Base::__call(name,params);
+        // throw MethodNotFound();
+        throw Php::Exception("Method '"+name+"()' not found.");
+        // unreachable code
+        return nullptr;
     }
 
 };

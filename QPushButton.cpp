@@ -1,6 +1,7 @@
 #include "phpqtng.h"
 #define QtParentClass QWidget
 #define QtClass QPushButton
+
 #define ME QNAME(QtClass)
 #define PARENT QNAME(QtParentClass)
 void ME::__construct(Php::Parameters &params)
@@ -27,25 +28,9 @@ void ME::__set(const Php::Value &name, const Php::Value &value)
     
     Php::Base::__set(name,value);
 }
-Php::Value ME::__call(const char *_name, Php::Parameters &params)
+Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 {
-    //TODO: DUP
-    string name=_name;
-    if (name=="connect" and params.size()==4 )
-    {
-        QObject *sender=PARAM_QOBJECT(params[0]);
-        QObject *receiver=PARAM_QOBJECT(params[2]);
-        string sender_signal=params[1];
-        sender_signal="2"+sender_signal;
-        string receiver_slot=params[3];
-        receiver_slot="1"+receiver_slot;
-        if (sender_signal.substr(sender_signal.size()-2,2)!="()")
-            sender_signal+="()";
-        if (receiver_slot.substr(receiver_slot.size()-2,2)!="()")
-            receiver_slot+="()";
-        return int(q->connect(sender,sender_signal.c_str(),receiver,receiver_slot.c_str()));
-    }
-    return PhpQtNgBase::__call(_name,params);
+    return PARENT::call(name,params,q);
 }
 Php::Value ME::__callStatic(const char *_name, Php::Parameters &params)
 {

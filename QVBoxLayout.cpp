@@ -24,13 +24,12 @@ void ME::__set(const Php::Value &name, const Php::Value &value)
     Php::Base::__set(name,value);
 }
 
-Php::Value ME::__call(const char *_name, Php::Parameters &params)
+Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 {
-    string name=_name;
     if (name=="addWidget")
         q->addWidget(PARAM_QWIDGET(params[0]));
     else
-        return PhpQtNgBase::__call(_name,params);
+        return PARENT::call(name,params,q);
     return nullptr;
 }
 
