@@ -24,6 +24,17 @@ void ME::__set(const Php::Value &name, const Php::Value &value)
 }
 Php::Value ME::__call(const char *_name, Php::Parameters &params)
 {
+    string name=_name;
+    if (name=="connect" and params.size()==4 )
+    {
+        QObject *sender=PARAM_QOBJECT(params[0]);
+        QObject *receiver=PARAM_QOBJECT(params[2]);
+        string sender_signal=params[1];
+        sender_signal="2"+sender_signal;
+        string receiver_slot=params[3];
+        receiver_slot="1"+receiver_slot;
+        return int(q->connect(sender,sender_signal.c_str(),receiver,receiver_slot.c_str()));
+    }
     return PhpQtNgBase::__call(_name,params);
 }
 Php::Value ME::__callStatic(const char *_name, Php::Parameters &params)
