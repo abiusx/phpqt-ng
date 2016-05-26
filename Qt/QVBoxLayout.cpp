@@ -12,7 +12,7 @@ void ME::__construct(Php::Parameters &params)
     else
         q=new QVBoxLayout();
 
-}
+} 
 Php::Value ME::__get(const Php::Value &name)
 {
 

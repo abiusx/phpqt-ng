@@ -46,4 +46,3 @@ Php::Value ME::__callStatic(const char *_name, Php::Parameters &params)
 
     return nullptr;
 }
-
