@@ -33,8 +33,13 @@ Php::Value ME::__call(const char *_name, Php::Parameters &params)
         sender_signal="2"+sender_signal;
         string receiver_slot=params[3];
         receiver_slot="1"+receiver_slot;
+        if (sender_signal.substr(sender_signal.size()-2,2)!="()")
+            sender_signal+="()";
+        if (receiver_slot.substr(receiver_slot.size()-2,2)!="()")
+            receiver_slot+="()";
         return int(q->connect(sender,sender_signal.c_str(),receiver,receiver_slot.c_str()));
     }
+    //todo: with 3 params, consider (q) the first
     return PhpQtNgBase::__call(_name,params);
 }
 Php::Value ME::__callStatic(const char *_name, Php::Parameters &params)

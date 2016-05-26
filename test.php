@@ -9,9 +9,9 @@ $button = new QPushButton("&Quit");
 $layout=new QVBoxLayout;
 $layout->addWidget($label);
 $layout->addWidget($button);
-$r=$button->connect($button,"clicked()",$app,"quit()");
+$r=$button->connect($button,"clicked",$app,"quit");
 var_dump($r);
-$r=$button->connect($button,"clicked()",$app,"quit()");
+$r=$button->connect($button,"clicked",$app,"quit");
 var_dump($r);
 
 $window = new QWidget;
