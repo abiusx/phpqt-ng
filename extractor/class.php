@@ -38,6 +38,12 @@ function parseArg($arg)
 	$a['pointer']=substr($a['type'],-1)=="*";
 	$a['reference']=substr($a['type'],-1)=="&";
 	$a['rawtype']=$a['type'];
+	if (($r1=strpos($a['type'],"<"))!==false) //templated type
+	{
+		$r2=strrpos($a['type'], ">");
+		$a['template']=parseArg(substr($a['type'],$r1+1,$r2-$r1-1));
+		$a['type']=substr($a['type'],0,$r1).substr($a['type'],$r2+1);
+	}
 	if ($a['virtual'])
 		$a['type']=substr($a['type'],0,strpos($a['type'],"virtual")).substr($a['type'],strpos($a['type'],"virtual")+8);
 	if ($a['const'])
@@ -186,6 +192,8 @@ function typehint($arg)
 		return "Numeric";
 	elseif ($Type=="WId") //window ID
 		return "Numeric";
+	elseif ($Type=="void" or $Type=="")
+		return "Null";
 	else
 	{
 		trigger_error("Could not find a suitable typehint for '{$Type} ({$arg['rawtype']})'.");
@@ -220,24 +228,34 @@ function prepareArgs($args,$argCount)
  * @param  [type] $typeinfo [description]
  * @return [type]           [description]
  */
-function typecastReturn($typeinfo)
+function typecastReturn($value,$typeinfo)
 {
 	$type=$typeinfo['type'];
-	if (!$type) return "";
 	$typehint=typehint($typeinfo);
-	if ($typehint=="String")
-		return "string";
+	if ($type=="QString")
+		$out="{$value}.toStdString()";
+	elseif (substr($type,0,5)=="QList")
+		$a="list";
+	elseif ($typehint=="String")
+		$a="string";
 	elseif ($typehint=="Numeric")
-		return $type;
+		$a=$type;
 	elseif ($typehint=="Float")
-		return $type;
+		$a=$type;
 	elseif ($typehint=="Bool")
-		return $type;
+		$a=$type;
 	elseif ($typehint=="Array")
-		return "list";
+		$a="list";
 	elseif ($typehint=="Object" and $typeinfo['pointer'])
-		return "QNAME({$type})";
-	return "";
+		$a="QNAME({$type})";
+	else
+		$a="";
+	if (!isset($out))
+		if ($a)
+			$out=$a."({$value})";
+		else
+			$out=$value;
+	return $out;
 }
 /**
  * Generates the return statement of a method
@@ -252,18 +270,16 @@ function generateReturn($methodName,$methodInfo,$argCount)
 	if ($method['return']['type']!='void')
 	{
 		$code.="return ";
-		$typecast=typecastReturn($method['return']);
-		if ($typecast)
-			$code.=$typecast."(";
 	}
 	// $code.="\t\t\t";
 
-	$code.="q->{$methodName} (".prepareArgs($method['args'],$argCount).")";
-	if (isset($typecast) and $typecast)
-		$code.=")";
+	$value="q->{$methodName} (".prepareArgs($method['args'],$argCount).")";
+	$code.=typecastReturn($value,$method['return']);
+
 	if ($method['return']['type']=="void")
 		$code.=", return nullptr";
 	$code.=";";
+	$code.=" //rtype: {$method['return']['rawtype']}";
 	return $code;
 }
 /**
