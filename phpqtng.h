@@ -42,9 +42,15 @@ public: \
     QtClass * q; \
     QNAME(QtClass)():q(0){} \
     void __construct(Php::Parameters &params); \
-	Php::Value __get(const Php::Value &name); \
-	void __set(const Php::Value &name, const Php::Value &value); \
-	Php::Value __call(const char *_name, Php::Parameters &params) { \
+	inline Php::Value __get(const Php::Value &name) { \
+        return QNAME(QtClass)::get(name,q); \
+    } \
+    static Php::Value get(const Php::Value &name, QtClass *q); \
+    inline void __set(const Php::Value &name, const Php::Value &value) { \
+        return QNAME(QtClass)::set(name,value,q); \
+    } \
+    static void set(const Php::Value &name, const Php::Value &value, QtClass *q); \
+	inline Php::Value __call(const char *_name, Php::Parameters &params) { \
         string name=_name; \
         return QNAME(QtClass)::call(name,params,q); \
     } \

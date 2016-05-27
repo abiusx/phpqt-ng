@@ -12,15 +12,13 @@ void ME::__construct(Php::Parameters &params)
         q=new QObject();
 
 }
-Php::Value ME::__get(const Php::Value &name)
+Php::Value ME::get(const Php::Value &name, QtClass *q)
 {
-
-    return Php::Base::__get(name);
+    return nullptr;
 }
-void ME::__set(const Php::Value &name, const Php::Value &value)
+void ME::set(const Php::Value &name, const Php::Value &value, QtClass *q)
 {
     
-    Php::Base::__set(name,value);
 }
 Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 {
