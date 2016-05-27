@@ -3,14 +3,11 @@ List of all functions in Qt, including methods: http://doc.qt.io/qt-4.8/function
 List of namespaces and enums in them: http://doc.qt.io/qt-4.8/namespaces.html
 List of global symbols in Qt (including global functions): http://doc.qt.io/qt-4.8/qtglobal.html
 
+Extractor now fully extracts type info and constructs method calls.
+However, somet types require explicit casting, such as arrays of objects and etc. They need to wrap all objects in the array and then return.
 
-Enum Parser
-Type Convertor
-	- QList<QSomething*> to PHP Array Convertor
-Class Method Extractor
-	- Public Slots are public methods too
-Class Property Extractor
-Class Static Method Extractor
-Signal to PHP function connector
+Enums, Static Methods, Properties and SIGNAL/SLOT via PHP Functions are still needed.
+
+
 * Abstract classes should not have a constructor (new)
 * Multiple Inheritance methods!! (e.g. QWidget)
