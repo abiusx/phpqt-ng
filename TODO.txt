@@ -8,3 +8,5 @@ Enum Parser
 Type Convertor
 Class Method Extractor
 Class Property Extractor
+Class Static Method Extractor
+Signal to PHP function connector
