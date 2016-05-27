@@ -34,7 +34,7 @@ class MethodNotFound: public exception {
 #define PARAM_QOBJECT(param)  (QObject *)(((QNAME(QObject) *)param.implementation())->q)
 #define PARAM_QWIDGET(param)  (QWidget *)(((QNAME(QWidget) *)param.implementation())->q)
 #define PARAM_QTYPE(type,param)  (type *)(((QNAME(type) *)param.implementation())->q)
-#define GET_CLASS(object_param)  (param.typePhp::call("get_class", object_param))
+#define GET_CLASS(object_param)  (Php::call("get_class", object_param))
 
 #define PHPQTNG_CLASS_NODELETE(QtClass) \
 class QNAME(QtClass):public PHPQtNgBase \
@@ -42,7 +42,7 @@ class QNAME(QtClass):public PHPQtNgBase \
 public: \
     QtClass * q; \
     QNAME(QtClass)():q(0){} \
-    QNAME(QtClass)(QtClass _q*):q(_q) {} \
+    QNAME(QtClass)(QtClass *_q):q(_q) {} \
     void __construct(Php::Parameters &params); \
 	inline Php::Value __get(const Php::Value &name) { \
         return QNAME(QtClass)::get(name,q); \

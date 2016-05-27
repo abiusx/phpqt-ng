@@ -33,13 +33,15 @@ function parseArg($arg)
 		$a['type']=trim(substr($arg,0,strpos($arg,"<i>")));
 	else
 		$a['type']=trim($arg);
-
-	$a['const']=strpos($a['type'], "const")===0;
+	$a['virtual']=strpos($a['type'],"virtual")!==false;
+	$a['const']=strpos($a['type'], "const")!==false;
 	$a['pointer']=substr($a['type'],-1)=="*";
 	$a['reference']=substr($a['type'],-1)=="&";
 	$a['rawtype']=$a['type'];
+	if ($a['virtual'])
+		$a['type']=substr($a['type'],0,strpos($a['type'],"virtual")).substr($a['type'],strpos($a['type'],"virtual")+8);
 	if ($a['const'])
-		$a['type']=substr($a['type'],6);
+		$a['type']=substr($a['type'],0,strpos($a['type'],"const")).substr($a['type'],strpos($a['type'],"const")+6);
 	if ($a['pointer'] or $a['reference'])
 		$a['type']=substr($a['type'],0,-2);
 	return $a;
@@ -75,6 +77,7 @@ function findClass($class,$url)
 	{
 		$name=trim($match[3]);
 		$return=trim($match[1]);
+		$return=str_replace("<code>(preliminary) </code>", "", $return);
 		if (!preg_match("/\((.*?)\)(.*)/ims",$match[4],$res))
 			return false;
 		$args=$res[1];
@@ -121,43 +124,6 @@ function findAllClasses($url)
 	}
 }
 
-// function _methodInstanceCode($methodName,$methodInstance,$count)
-// {
-// 	$instance_code="";
-// 	$argCount=count($methodInstance['args']);
-// 	if ($count>1)
-// 		$instance_code.="if ( params.size() == $argCount )\n\t\t\t";
-// 	$instance_code.="return q->{$methodName}(";
-// 	$args=[];
-// 	if ($methodInstance['args'])
-// 	{
-
-// 		$instance_code.=" ";
-// 		$index=0;
-// 		//loop over arguments
-// 		foreach ($methodInstance['args'] as $arg)
-// 		{
-// 			$type=$arg['type'];
-// 			if ($type=="QString")
-// 				$a="QString(params[$index])";
-// 			elseif ($arg['pointer'] and strlen($type)>3 and $type[0]=="Q" and ctype_upper($type[1]))
-// 				$a="PARAM_QTYPE($type, param[$index])";
-// 			elseif ($arg['const'] and $arg['reference'] and strlen($type)>3 and $type[0]=="Q" and ctype_upper($type[1]))
-// 				$a="{$type}(param[$index])";
-// 			elseif ($type)
-// 			{
-// 				$a="({$type})params[$index]";
-// 			}
-// 			else
-// 				$a="params[$index]";
-// 			$args[]=$a;
-// 			$index++;
-// 		}
-// 	}
-// 	$instance_code.=implode(" , ",$args)." );";
-// 	return $instance_code;
-// }
-
 /**
  * Determines whether a type is a QtType or not
  * @param  [type]  $type [description]
@@ -166,6 +132,10 @@ function findAllClasses($url)
 function isQtType($type)
 {
 	return (strlen($type)>3 and $type[0]=="Q" and ctype_upper($type[1]));
+}
+function isQtEnum($type)
+{
+	return strlen($type)>5 and substr($type,0,4)=="Qt::";
 }
 /**
  * Typecasts a function argument (parameter)
@@ -179,21 +149,22 @@ function typecastParam($paramIndex,$arg)
 	if ($type=="QString")
 		$a="QString(params[$paramIndex])";
 	elseif ($arg['pointer'] and isQtType($type))
-		$a="PARAM_QTYPE($type,param[$paramIndex])";
+		$a="PARAM_QTYPE($type,params[$paramIndex])";
 	elseif ($arg['const'] and $arg['reference'] and isQtType($type))
-		$a="{$type}(param[$paramIndex])";
+		$a="{$type}(params[$paramIndex])";
+	elseif (isQtEnum($type))
+		$a="{$type}((int)params[$paramIndex])";
 	elseif ($type)
-	{
 		$a="({$type})params[$paramIndex]";
-	}
 	else
 		$a="params[$paramIndex]";
 	return $a;
 }
-function typehintParam($paramIndex,$arg)
-{
-
-}
+/**
+ * Returns Php::Type compatible type based on C++/Qt type
+ * @param  [type] $arg [description]
+ * @return [type]      [description]
+ */
 function typehint($arg)
 {
 	$Type=$arg['type'];
@@ -201,16 +172,25 @@ function typehint($arg)
 	if ($type=="int" or $type=="long" or $type=="ulong" or $type=="ulong16" or $type=="ulong32" or $type=="uint"
 		or $type=="uint16" or $type=="uint32" or $type=="short" or $type=="ushort")
 		return "Numeric";
+	elseif ($type=="bool")
+		return "Bool";
 	elseif ($type=="qstring" or ($type=="char" and $arg['pointer']) or $type=="string")
 		return "String";
 	elseif (isQtType($Type))
 		return "Object";
-	elseif ($type=="float" or $type=="double")
+	elseif ($type=="float" or $type=="double" or $type=="qreal")
 		return "Float";
-	elseif ($type=="qlist" or $type=="vector" or $type=="qvector")
+	elseif ($type=="qlist" or $type=="vector" or $type=="qvector" or $type=="list")
 		return "Array";
+	elseif (isQtEnum($Type))
+		return "Numeric";
+	elseif ($Type=="WId") //window ID
+		return "Numeric";
 	else
-		trigger_error("Could not find a suitable typehint for '{$Type} ({$arg['rawtype']}'.");
+	{
+		trigger_error("Could not find a suitable typehint for '{$Type} ({$arg['rawtype']})'.");
+		// var_dump($arg); ///DEBUG
+	}
 	return "Numeric";
 
 // Php::Type::Null
@@ -236,6 +216,30 @@ function prepareArgs($args,$argCount)
 	return " ".implode(", ",$argz)." ";
 }
 /**
+ * Casts the return type from Qt/C++ to something compatible with PHP(CPP)
+ * @param  [type] $typeinfo [description]
+ * @return [type]           [description]
+ */
+function typecastReturn($typeinfo)
+{
+	$type=$typeinfo['type'];
+	if (!$type) return "";
+	$typehint=typehint($typeinfo);
+	if ($typehint=="String")
+		return "string";
+	elseif ($typehint=="Numeric")
+		return $type;
+	elseif ($typehint=="Float")
+		return $type;
+	elseif ($typehint=="Bool")
+		return $type;
+	elseif ($typehint=="Array")
+		return "list";
+	elseif ($typehint=="Object" and $typeinfo['pointer'])
+		return "QNAME({$type})";
+	return "";
+}
+/**
  * Generates the return statement of a method
  * @param  [type] $methodName [description]
  * @param  [type] $methodInfo [description]
@@ -246,19 +250,16 @@ function generateReturn($methodName,$methodInfo,$argCount)
 	$method=$methodInfo;
 	$code="";
 	if ($method['return']['type']!='void')
-		$code.="return ";
-	// $code.="\t\t\t";
-	if (isQtType($method['return']['type']))
 	{
-		if ($method['return']['pointer'])	
-			$code.="QNAME({$method['return']['type']})("; //construct another PhpQt from it
-		else
-			$code.="{$method['return']['type']}(";
+		$code.="return ";
+		$typecast=typecastReturn($method['return']);
+		if ($typecast)
+			$code.=$typecast."(";
 	}
+	// $code.="\t\t\t";
 
 	$code.="q->{$methodName} (".prepareArgs($method['args'],$argCount).")";
-	
-	if (isQtType($method['return']['type']))
+	if (isset($typecast) and $typecast)
 		$code.=")";
 	if ($method['return']['type']=="void")
 		$code.=", return nullptr";
@@ -293,7 +294,6 @@ function generateMethodCode($name,$methodInstances)
 		}
 	}
 	ksort($methodsByArgCount);
-
 	//generating code
 	$code="";
 	$else="";
@@ -404,8 +404,13 @@ Php::Value ME::__callStatic(const char *_name, Php::Parameters &params)
     return nullptr;
 }
 X;
-	@file_put_contents("out/Qt/{$class}.cpp.txt", $code);
 	return $code;
+}
+function generateClassWrapper($class)
+{
+	$code=generateWrapper($class);
+	file_put_contents("../Qt/{$class}.cpp", $code);
+	return true;
 }
 // findAllClasses($url);
 // $r=findClass("Q3CacheIterator","$url/q3cacheiterator.html");
@@ -413,5 +418,6 @@ X;
 // findClass("Q3Action","$url/q3action.html");
 // findClass("Q3Http","$url/q3http.html");
 // $r=findClass("QWidget","$url/qwidget.html");
-generateWrapper("QWidget");
+// generateWrapper("QWidget");
 
+generateClassWrapper("QWidget");
