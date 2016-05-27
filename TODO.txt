@@ -6,7 +6,11 @@ List of global symbols in Qt (including global functions): http://doc.qt.io/qt-4
 
 Enum Parser
 Type Convertor
+	- QList<QSomething*> to PHP Array Convertor
 Class Method Extractor
+	- Public Slots are public methods too
 Class Property Extractor
 Class Static Method Extractor
 Signal to PHP function connector
+* Abstract classes should not have a constructor (new)
+* Multiple Inheritance methods!! (e.g. QWidget)

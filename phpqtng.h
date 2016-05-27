@@ -112,6 +112,9 @@ PHPQTNG_CLASS_STUB(QLabel);
 #include <QPushButton>
 PHPQTNG_CLASS_STUB(QPushButton);
 
+#include <QLayout>
+PHPQTNG_CLASS_STUB(QLayout);
+
 #include <QVBoxLayout>
 PHPQTNG_CLASS_STUB(QVBoxLayout);
 

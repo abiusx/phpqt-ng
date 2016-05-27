@@ -30,11 +30,12 @@ void ME::set(const Php::Value &name, const Php::Value &value, QtClass *q)
 }
 Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 {
-	if ( name=="acceptDrops" )
-	{
-		if ( params.size()==0 )
-			return bool(q->acceptDrops ()); //rtype: bool
-	}
+    if ( name=="acceptDrops" )
+    {
+        if ( params.size()==0 )
+            return bool(q->acceptDrops ()); //rtype: bool
+    }
+    /*
 	else if ( name=="accessibleDescription" )
 	{
 		if ( params.size()==0 )
@@ -48,27 +49,27 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="actions" )
 	{
 		if ( params.size()==0 )
-			return list(q->actions ()); //rtype: QList<QAction *>
+			return q->actions ().toStdList(); //rtype: QList<QAction *>
 	}
 	else if ( name=="activateWindow" )
 	{
 		if ( params.size()==0 )
-			q->activateWindow (), return nullptr; //rtype: void
+			{ q->activateWindow (); return nullptr; } //rtype: void
 	}
 	else if ( name=="addAction" )
 	{
 		if ( params.size()==1 )
-			q->addAction ( PARAM_QTYPE(QAction,params[0]) ), return nullptr; //rtype: void
+			{ q->addAction ( PARAM_QTYPE(QAction,params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="addActions" )
 	{
 		if ( params.size()==1 )
-			q->addActions ( (QList)params[0] ), return nullptr; //rtype: void
+			{ q->addActions ( (QList)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="adjustSize" )
 	{
 		if ( params.size()==0 )
-			q->adjustSize (), return nullptr; //rtype: void
+			{ q->adjustSize (); return nullptr; } //rtype: void
 	}
 	else if ( name=="autoFillBackground" )
 	{
@@ -105,12 +106,12 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="clearFocus" )
 	{
 		if ( params.size()==0 )
-			q->clearFocus (), return nullptr; //rtype: void
+			{ q->clearFocus (); return nullptr; } //rtype: void
 	}
 	else if ( name=="clearMask" )
 	{
 		if ( params.size()==0 )
-			q->clearMask (), return nullptr; //rtype: void
+			{ q->clearMask (); return nullptr; } //rtype: void
 	}
 	else if ( name=="contentsMargins" )
 	{
@@ -125,7 +126,7 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="contextMenuPolicy" )
 	{
 		if ( params.size()==0 )
-			return Qt::ContextMenuPolicy(q->contextMenuPolicy ()); //rtype: Qt::ContextMenuPolicy
+			return int(q->contextMenuPolicy ()); //rtype: Qt::ContextMenuPolicy
 	}
 	else if ( name=="cursor" )
 	{
@@ -135,17 +136,17 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="effectiveWinId" )
 	{
 		if ( params.size()==0 )
-			return WId(q->effectiveWinId ()); //rtype: WId
+			return int(q->effectiveWinId ()); //rtype: WId
 	}
 	else if ( name=="ensurePolished" )
 	{
 		if ( params.size()==0 )
-			q->ensurePolished (), return nullptr; //rtype: void
+			{ q->ensurePolished (); return nullptr; } //rtype: void
 	}
 	else if ( name=="focusPolicy" )
 	{
 		if ( params.size()==0 )
-			return Qt::FocusPolicy(q->focusPolicy ()); //rtype: Qt::FocusPolicy
+			return int(q->focusPolicy ()); //rtype: Qt::FocusPolicy
 	}
 	else if ( name=="focusProxy" )
 	{
@@ -195,26 +196,26 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="getContentsMargins" )
 	{
 		if ( params.size()==4 )
-			q->getContentsMargins ( (int)params[0], (int)params[1], (int)params[2], (int)params[3] ), return nullptr; //rtype: void
+			{ q->getContentsMargins ( (int)params[0], (int)params[1], (int)params[2], (int)params[3] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="grabGesture" )
 	{
 		if ( params.size()==1 )
-			q->grabGesture ( Qt::GestureType((int)params[0]) ), return nullptr; //rtype: void
+			{ q->grabGesture ( Qt::GestureType((int)params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->grabGesture ( Qt::GestureType((int)params[0]), Qt::GestureFlags((int)params[1]) ), return nullptr; //rtype: void
+			{ q->grabGesture ( Qt::GestureType((int)params[0]), Qt::GestureFlags((int)params[1]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="grabKeyboard" )
 	{
 		if ( params.size()==0 )
-			q->grabKeyboard (), return nullptr; //rtype: void
+			{ q->grabKeyboard (); return nullptr; } //rtype: void
 	}
 	else if ( name=="grabMouse" )
 	{
 		if ( params.size()==0 )
-			q->grabMouse (), return nullptr; //rtype: void
+			{ q->grabMouse (); return nullptr; } //rtype: void
 		else if ( params.size()==1 )
-			q->grabMouse ( QCursor(params[0]) ), return nullptr; //rtype: void
+			{ q->grabMouse ( QCursor(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="grabShortcut" )
 	{
@@ -266,7 +267,7 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="inputMethodHints" )
 	{
 		if ( params.size()==0 )
-			return Qt::InputMethodHints(q->inputMethodHints ()); //rtype: Qt::InputMethodHints
+			return int(q->inputMethodHints ()); //rtype: Qt::InputMethodHints
 	}
 	else if ( name=="inputMethodQuery" )
 	{
@@ -276,12 +277,12 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="insertAction" )
 	{
 		if ( params.size()==2 )
-			q->insertAction ( PARAM_QTYPE(QAction,params[0]), PARAM_QTYPE(QAction,params[1]) ), return nullptr; //rtype: void
+			{ q->insertAction ( PARAM_QTYPE(QAction,params[0]), PARAM_QTYPE(QAction,params[1]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="insertActions" )
 	{
 		if ( params.size()==2 )
-			q->insertActions ( PARAM_QTYPE(QAction,params[0]), (QList)params[1] ), return nullptr; //rtype: void
+			{ q->insertActions ( PARAM_QTYPE(QAction,params[0]), (QList)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="isActiveWindow" )
 	{
@@ -356,7 +357,7 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="layoutDirection" )
 	{
 		if ( params.size()==0 )
-			return Qt::LayoutDirection(q->layoutDirection ()); //rtype: Qt::LayoutDirection
+			return int(q->layoutDirection ()); //rtype: Qt::LayoutDirection
 	}
 	else if ( name=="locale" )
 	{
@@ -366,12 +367,12 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="macCGHandle" )
 	{
 		if ( params.size()==0 )
-			return Qt::HANDLE(q->macCGHandle ()); //rtype: Qt::HANDLE
+			return int(q->macCGHandle ()); //rtype: Qt::HANDLE
 	}
 	else if ( name=="macQDHandle" )
 	{
 		if ( params.size()==0 )
-			return Qt::HANDLE(q->macQDHandle ()); //rtype: Qt::HANDLE
+			return int(q->macQDHandle ()); //rtype: Qt::HANDLE
 	}
 	else if ( name=="mapFrom" )
 	{
@@ -446,9 +447,9 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="move" )
 	{
 		if ( params.size()==1 )
-			q->move ( QPoint(params[0]) ), return nullptr; //rtype: void
+			{ q->move ( QPoint(params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->move ( (int)params[0], (int)params[1] ), return nullptr; //rtype: void
+			{ q->move ( (int)params[0], (int)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="nativeParentWidget" )
 	{
@@ -468,7 +469,7 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="overrideWindowFlags" )
 	{
 		if ( params.size()==1 )
-			q->overrideWindowFlags ( Qt::WindowFlags((int)params[0]) ), return nullptr; //rtype: void
+			{ q->overrideWindowFlags ( Qt::WindowFlags((int)params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="palette" )
 	{
@@ -508,58 +509,60 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="releaseKeyboard" )
 	{
 		if ( params.size()==0 )
-			q->releaseKeyboard (), return nullptr; //rtype: void
+			{ q->releaseKeyboard (); return nullptr; } //rtype: void
 	}
 	else if ( name=="releaseMouse" )
 	{
 		if ( params.size()==0 )
-			q->releaseMouse (), return nullptr; //rtype: void
+			{ q->releaseMouse (); return nullptr; } //rtype: void
 	}
 	else if ( name=="releaseShortcut" )
 	{
 		if ( params.size()==1 )
-			q->releaseShortcut ( (int)params[0] ), return nullptr; //rtype: void
+			{ q->releaseShortcut ( (int)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="removeAction" )
 	{
 		if ( params.size()==1 )
-			q->removeAction ( PARAM_QTYPE(QAction,params[0]) ), return nullptr; //rtype: void
+			{ q->removeAction ( PARAM_QTYPE(QAction,params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="render" )
 	{
 		if ( params.size()==1 ) //competition (2)
 		{
 			 if ( params[0].type()==Php::Type::Object and GET_CLASS(params[0])=="QPaintDevice" )
-				q->render ( PARAM_QTYPE(QPaintDevice,params[0]) ), return nullptr; //rtype: void
+				{ q->render ( PARAM_QTYPE(QPaintDevice,params[0]) ); return nullptr; } //rtype: void
 			 else if ( params[0].type()==Php::Type::Object and GET_CLASS(params[0])=="QPainter" )
-				q->render ( PARAM_QTYPE(QPainter,params[0]) ), return nullptr; //rtype: void
+				{ q->render ( PARAM_QTYPE(QPainter,params[0]) ); return nullptr; } //rtype: void
 		}
 		else if ( params.size()==2 ) //competition (2)
 		{
 			 if ( params[0].type()==Php::Type::Object and GET_CLASS(params[0])=="QPaintDevice" and params[1].type()==Php::Type::Object and GET_CLASS(params[1])=="QPoint" )
-				q->render ( PARAM_QTYPE(QPaintDevice,params[0]), QPoint(params[1]) ), return nullptr; //rtype: void
+				{ q->render ( PARAM_QTYPE(QPaintDevice,params[0]), QPoint(params[1]) ); return nullptr; } //rtype: void
 			 else if ( params[0].type()==Php::Type::Object and GET_CLASS(params[0])=="QPainter" and params[1].type()==Php::Type::Object and GET_CLASS(params[1])=="QPoint" )
-				q->render ( PARAM_QTYPE(QPainter,params[0]), QPoint(params[1]) ), return nullptr; //rtype: void
+				{ q->render ( PARAM_QTYPE(QPainter,params[0]), QPoint(params[1]) ); return nullptr; } //rtype: void
 		}
 	}
 	else if ( name=="repaint" )
 	{
-		if ( params.size()==1 ) //competition (2)
+		if ( params.size()==0 )
+			{ q->repaint (); return nullptr; } //rtype: void
+		else if ( params.size()==1 ) //competition (2)
 		{
 			 if ( params[0].type()==Php::Type::Object and GET_CLASS(params[0])=="QRect" )
-				q->repaint ( QRect(params[0]) ), return nullptr; //rtype: void
+				{ q->repaint ( QRect(params[0]) ); return nullptr; } //rtype: void
 			 else if ( params[0].type()==Php::Type::Object and GET_CLASS(params[0])=="QRegion" )
-				q->repaint ( QRegion(params[0]) ), return nullptr; //rtype: void
+				{ q->repaint ( QRegion(params[0]) ); return nullptr; } //rtype: void
 		}
 		else if ( params.size()==4 )
-			q->repaint ( (int)params[0], (int)params[1], (int)params[2], (int)params[3] ), return nullptr; //rtype: void
+			{ q->repaint ( (int)params[0], (int)params[1], (int)params[2], (int)params[3] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="resize" )
 	{
 		if ( params.size()==1 )
-			q->resize ( QSize(params[0]) ), return nullptr; //rtype: void
+			{ q->resize ( QSize(params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->resize ( (int)params[0], (int)params[1] ), return nullptr; //rtype: void
+			{ q->resize ( (int)params[0], (int)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="restoreGeometry" )
 	{
@@ -574,318 +577,322 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="scroll" )
 	{
 		if ( params.size()==2 )
-			q->scroll ( (int)params[0], (int)params[1] ), return nullptr; //rtype: void
+			{ q->scroll ( (int)params[0], (int)params[1] ); return nullptr; } //rtype: void
 		else if ( params.size()==3 )
-			q->scroll ( (int)params[0], (int)params[1], QRect(params[2]) ), return nullptr; //rtype: void
+			{ q->scroll ( (int)params[0], (int)params[1], QRect(params[2]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setAcceptDrops" )
 	{
 		if ( params.size()==1 )
-			q->setAcceptDrops ( (bool)params[0] ), return nullptr; //rtype: void
+			{ q->setAcceptDrops ( (bool)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setAccessibleDescription" )
 	{
 		if ( params.size()==1 )
-			q->setAccessibleDescription ( QString(params[0]) ), return nullptr; //rtype: void
+			{ q->setAccessibleDescription ( QString(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setAccessibleName" )
 	{
 		if ( params.size()==1 )
-			q->setAccessibleName ( QString(params[0]) ), return nullptr; //rtype: void
+			{ q->setAccessibleName ( QString(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setAttribute" )
 	{
 		if ( params.size()==1 )
-			q->setAttribute ( Qt::WidgetAttribute((int)params[0]) ), return nullptr; //rtype: void
+			{ q->setAttribute ( Qt::WidgetAttribute((int)params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->setAttribute ( Qt::WidgetAttribute((int)params[0]), (bool)params[1] ), return nullptr; //rtype: void
+			{ q->setAttribute ( Qt::WidgetAttribute((int)params[0]), (bool)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setAutoFillBackground" )
 	{
 		if ( params.size()==1 )
-			q->setAutoFillBackground ( (bool)params[0] ), return nullptr; //rtype: void
+			{ q->setAutoFillBackground ( (bool)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setBackgroundRole" )
 	{
 		if ( params.size()==1 )
-			q->setBackgroundRole ( (QPalette::ColorRole)params[0] ), return nullptr; //rtype: void
+			{ q->setBackgroundRole ( (QPalette::ColorRole)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setBaseSize" )
 	{
 		if ( params.size()==1 )
-			q->setBaseSize ( QSize(params[0]) ), return nullptr; //rtype: void
+			{ q->setBaseSize ( QSize(params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->setBaseSize ( (int)params[0], (int)params[1] ), return nullptr; //rtype: void
+			{ q->setBaseSize ( (int)params[0], (int)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setContentsMargins" )
 	{
 		if ( params.size()==1 )
-			q->setContentsMargins ( QMargins(params[0]) ), return nullptr; //rtype: void
+			{ q->setContentsMargins ( QMargins(params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==4 )
-			q->setContentsMargins ( (int)params[0], (int)params[1], (int)params[2], (int)params[3] ), return nullptr; //rtype: void
+			{ q->setContentsMargins ( (int)params[0], (int)params[1], (int)params[2], (int)params[3] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setContextMenuPolicy" )
 	{
 		if ( params.size()==1 )
-			q->setContextMenuPolicy ( Qt::ContextMenuPolicy((int)params[0]) ), return nullptr; //rtype: void
+			{ q->setContextMenuPolicy ( Qt::ContextMenuPolicy((int)params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setCursor" )
 	{
 		if ( params.size()==1 )
-			q->setCursor ( QCursor(params[0]) ), return nullptr; //rtype: void
+			{ q->setCursor ( QCursor(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setEditFocus" )
 	{
 		if ( params.size()==1 )
-			q->setEditFocus ( (bool)params[0] ), return nullptr; //rtype: void
+			{ q->setEditFocus ( (bool)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setFixedHeight" )
 	{
 		if ( params.size()==1 )
-			q->setFixedHeight ( (int)params[0] ), return nullptr; //rtype: void
+			{ q->setFixedHeight ( (int)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setFixedSize" )
 	{
 		if ( params.size()==1 )
-			q->setFixedSize ( QSize(params[0]) ), return nullptr; //rtype: void
+			{ q->setFixedSize ( QSize(params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->setFixedSize ( (int)params[0], (int)params[1] ), return nullptr; //rtype: void
+			{ q->setFixedSize ( (int)params[0], (int)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setFixedWidth" )
 	{
 		if ( params.size()==1 )
-			q->setFixedWidth ( (int)params[0] ), return nullptr; //rtype: void
+			{ q->setFixedWidth ( (int)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setFocus" )
 	{
-		if ( params.size()==1 )
-			q->setFocus ( Qt::FocusReason((int)params[0]) ), return nullptr; //rtype: void
+		if ( params.size()==0 )
+			{ q->setFocus (); return nullptr; } //rtype: void
+		else if ( params.size()==1 )
+			{ q->setFocus ( Qt::FocusReason((int)params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setFocusPolicy" )
 	{
 		if ( params.size()==1 )
-			q->setFocusPolicy ( Qt::FocusPolicy((int)params[0]) ), return nullptr; //rtype: void
+			{ q->setFocusPolicy ( Qt::FocusPolicy((int)params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setFocusProxy" )
 	{
 		if ( params.size()==1 )
-			q->setFocusProxy ( PARAM_QTYPE(QWidget,params[0]) ), return nullptr; //rtype: void
+			{ q->setFocusProxy ( PARAM_QTYPE(QWidget,params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setFont" )
 	{
 		if ( params.size()==1 )
-			q->setFont ( QFont(params[0]) ), return nullptr; //rtype: void
+			{ q->setFont ( QFont(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setForegroundRole" )
 	{
 		if ( params.size()==1 )
-			q->setForegroundRole ( (QPalette::ColorRole)params[0] ), return nullptr; //rtype: void
+			{ q->setForegroundRole ( (QPalette::ColorRole)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setGeometry" )
 	{
 		if ( params.size()==1 )
-			q->setGeometry ( QRect(params[0]) ), return nullptr; //rtype: void
+			{ q->setGeometry ( QRect(params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==4 )
-			q->setGeometry ( (int)params[0], (int)params[1], (int)params[2], (int)params[3] ), return nullptr; //rtype: void
+			{ q->setGeometry ( (int)params[0], (int)params[1], (int)params[2], (int)params[3] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setGraphicsEffect" )
 	{
 		if ( params.size()==1 )
-			q->setGraphicsEffect ( PARAM_QTYPE(QGraphicsEffect,params[0]) ), return nullptr; //rtype: void
+			{ q->setGraphicsEffect ( PARAM_QTYPE(QGraphicsEffect,params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setInputContext" )
 	{
 		if ( params.size()==1 )
-			q->setInputContext ( PARAM_QTYPE(QInputContext,params[0]) ), return nullptr; //rtype: void
+			{ q->setInputContext ( PARAM_QTYPE(QInputContext,params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setInputMethodHints" )
 	{
 		if ( params.size()==1 )
-			q->setInputMethodHints ( Qt::InputMethodHints((int)params[0]) ), return nullptr; //rtype: void
+			{ q->setInputMethodHints ( Qt::InputMethodHints((int)params[0]) ); return nullptr; } //rtype: void
 	}
+    */
 	else if ( name=="setLayout" )
 	{
 		if ( params.size()==1 )
-			q->setLayout ( PARAM_QTYPE(QLayout,params[0]) ), return nullptr; //rtype: void
+			{ q->setLayout ( PARAM_QTYPE(QLayout,params[0]) ); return nullptr; } //rtype: void
 	}
+    /*
 	else if ( name=="setLayoutDirection" )
 	{
 		if ( params.size()==1 )
-			q->setLayoutDirection ( Qt::LayoutDirection((int)params[0]) ), return nullptr; //rtype: void
+			{ q->setLayoutDirection ( Qt::LayoutDirection((int)params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setLocale" )
 	{
 		if ( params.size()==1 )
-			q->setLocale ( QLocale(params[0]) ), return nullptr; //rtype: void
+			{ q->setLocale ( QLocale(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setMask" )
 	{
 		if ( params.size()==1 ) //competition (2)
 		{
 			 if ( params[0].type()==Php::Type::Object and GET_CLASS(params[0])=="QBitmap" )
-				q->setMask ( QBitmap(params[0]) ), return nullptr; //rtype: void
+				{ q->setMask ( QBitmap(params[0]) ); return nullptr; } //rtype: void
 			 else if ( params[0].type()==Php::Type::Object and GET_CLASS(params[0])=="QRegion" )
-				q->setMask ( QRegion(params[0]) ), return nullptr; //rtype: void
+				{ q->setMask ( QRegion(params[0]) ); return nullptr; } //rtype: void
 		}
 	}
 	else if ( name=="setMaximumHeight" )
 	{
 		if ( params.size()==1 )
-			q->setMaximumHeight ( (int)params[0] ), return nullptr; //rtype: void
+			{ q->setMaximumHeight ( (int)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setMaximumSize" )
 	{
 		if ( params.size()==1 )
-			q->setMaximumSize ( QSize(params[0]) ), return nullptr; //rtype: void
+			{ q->setMaximumSize ( QSize(params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->setMaximumSize ( (int)params[0], (int)params[1] ), return nullptr; //rtype: void
+			{ q->setMaximumSize ( (int)params[0], (int)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setMaximumWidth" )
 	{
 		if ( params.size()==1 )
-			q->setMaximumWidth ( (int)params[0] ), return nullptr; //rtype: void
+			{ q->setMaximumWidth ( (int)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setMinimumHeight" )
 	{
 		if ( params.size()==1 )
-			q->setMinimumHeight ( (int)params[0] ), return nullptr; //rtype: void
+			{ q->setMinimumHeight ( (int)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setMinimumSize" )
 	{
 		if ( params.size()==1 )
-			q->setMinimumSize ( QSize(params[0]) ), return nullptr; //rtype: void
+			{ q->setMinimumSize ( QSize(params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->setMinimumSize ( (int)params[0], (int)params[1] ), return nullptr; //rtype: void
+			{ q->setMinimumSize ( (int)params[0], (int)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setMinimumWidth" )
 	{
 		if ( params.size()==1 )
-			q->setMinimumWidth ( (int)params[0] ), return nullptr; //rtype: void
+			{ q->setMinimumWidth ( (int)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setMouseTracking" )
 	{
 		if ( params.size()==1 )
-			q->setMouseTracking ( (bool)params[0] ), return nullptr; //rtype: void
+			{ q->setMouseTracking ( (bool)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setPalette" )
 	{
 		if ( params.size()==1 )
-			q->setPalette ( QPalette(params[0]) ), return nullptr; //rtype: void
+			{ q->setPalette ( QPalette(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setParent" )
 	{
 		if ( params.size()==1 )
-			q->setParent ( PARAM_QTYPE(QWidget,params[0]) ), return nullptr; //rtype: void
+			{ q->setParent ( PARAM_QTYPE(QWidget,params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->setParent ( PARAM_QTYPE(QWidget,params[0]), Qt::WindowFlags((int)params[1]) ), return nullptr; //rtype: void
+			{ q->setParent ( PARAM_QTYPE(QWidget,params[0]), Qt::WindowFlags((int)params[1]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setPlatformWindow" )
 	{
 		if ( params.size()==1 )
-			q->setPlatformWindow ( PARAM_QTYPE(QPlatformWindow,params[0]) ), return nullptr; //rtype: void
+			{ q->setPlatformWindow ( PARAM_QTYPE(QPlatformWindow,params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setPlatformWindowFormat" )
 	{
 		if ( params.size()==1 )
-			q->setPlatformWindowFormat ( QPlatformWindowFormat(params[0]) ), return nullptr; //rtype: void
+			{ q->setPlatformWindowFormat ( QPlatformWindowFormat(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setShortcutAutoRepeat" )
 	{
 		if ( params.size()==1 )
-			q->setShortcutAutoRepeat ( (int)params[0] ), return nullptr; //rtype: void
+			{ q->setShortcutAutoRepeat ( (int)params[0] ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->setShortcutAutoRepeat ( (int)params[0], (bool)params[1] ), return nullptr; //rtype: void
+			{ q->setShortcutAutoRepeat ( (int)params[0], (bool)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setShortcutEnabled" )
 	{
 		if ( params.size()==1 )
-			q->setShortcutEnabled ( (int)params[0] ), return nullptr; //rtype: void
+			{ q->setShortcutEnabled ( (int)params[0] ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->setShortcutEnabled ( (int)params[0], (bool)params[1] ), return nullptr; //rtype: void
+			{ q->setShortcutEnabled ( (int)params[0], (bool)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setSizeIncrement" )
 	{
 		if ( params.size()==1 )
-			q->setSizeIncrement ( QSize(params[0]) ), return nullptr; //rtype: void
+			{ q->setSizeIncrement ( QSize(params[0]) ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->setSizeIncrement ( (int)params[0], (int)params[1] ), return nullptr; //rtype: void
+			{ q->setSizeIncrement ( (int)params[0], (int)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setSizePolicy" )
 	{
 		if ( params.size()==1 )
-			q->setSizePolicy ( (QSizePolicy)params[0] ), return nullptr; //rtype: void
+			{ q->setSizePolicy ( (QSizePolicy)params[0] ); return nullptr; } //rtype: void
 		else if ( params.size()==2 )
-			q->setSizePolicy ( (QSizePolicy::Policy)params[0], (QSizePolicy::Policy)params[1] ), return nullptr; //rtype: void
+			{ q->setSizePolicy ( (QSizePolicy::Policy)params[0], (QSizePolicy::Policy)params[1] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setStatusTip" )
 	{
 		if ( params.size()==1 )
-			q->setStatusTip ( QString(params[0]) ), return nullptr; //rtype: void
+			{ q->setStatusTip ( QString(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setStyle" )
 	{
 		if ( params.size()==1 )
-			q->setStyle ( PARAM_QTYPE(QStyle,params[0]) ), return nullptr; //rtype: void
+			{ q->setStyle ( PARAM_QTYPE(QStyle,params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setToolTip" )
 	{
 		if ( params.size()==1 )
-			q->setToolTip ( QString(params[0]) ), return nullptr; //rtype: void
+			{ q->setToolTip ( QString(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setUpdatesEnabled" )
 	{
 		if ( params.size()==1 )
-			q->setUpdatesEnabled ( (bool)params[0] ), return nullptr; //rtype: void
+			{ q->setUpdatesEnabled ( (bool)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setWhatsThis" )
 	{
 		if ( params.size()==1 )
-			q->setWhatsThis ( QString(params[0]) ), return nullptr; //rtype: void
+			{ q->setWhatsThis ( QString(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setWindowFilePath" )
 	{
 		if ( params.size()==1 )
-			q->setWindowFilePath ( QString(params[0]) ), return nullptr; //rtype: void
+			{ q->setWindowFilePath ( QString(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setWindowFlags" )
 	{
 		if ( params.size()==1 )
-			q->setWindowFlags ( Qt::WindowFlags((int)params[0]) ), return nullptr; //rtype: void
+			{ q->setWindowFlags ( Qt::WindowFlags((int)params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setWindowIcon" )
 	{
 		if ( params.size()==1 )
-			q->setWindowIcon ( QIcon(params[0]) ), return nullptr; //rtype: void
+			{ q->setWindowIcon ( QIcon(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setWindowIconText" )
 	{
 		if ( params.size()==1 )
-			q->setWindowIconText ( QString(params[0]) ), return nullptr; //rtype: void
+			{ q->setWindowIconText ( QString(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setWindowModality" )
 	{
 		if ( params.size()==1 )
-			q->setWindowModality ( Qt::WindowModality((int)params[0]) ), return nullptr; //rtype: void
+			{ q->setWindowModality ( Qt::WindowModality((int)params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setWindowOpacity" )
 	{
 		if ( params.size()==1 )
-			q->setWindowOpacity ( (qreal)params[0] ), return nullptr; //rtype: void
+			{ q->setWindowOpacity ( (qreal)params[0] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setWindowRole" )
 	{
 		if ( params.size()==1 )
-			q->setWindowRole ( QString(params[0]) ), return nullptr; //rtype: void
+			{ q->setWindowRole ( QString(params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setWindowState" )
 	{
 		if ( params.size()==1 )
-			q->setWindowState ( Qt::WindowStates((int)params[0]) ), return nullptr; //rtype: void
+			{ q->setWindowState ( Qt::WindowStates((int)params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="setupUi" )
 	{
 		if ( params.size()==1 )
-			q->setupUi ( PARAM_QTYPE(QWidget,params[0]) ), return nullptr; //rtype: void
+			{ q->setupUi ( PARAM_QTYPE(QWidget,params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="size" )
 	{
@@ -910,7 +917,7 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="stackUnder" )
 	{
 		if ( params.size()==1 )
-			q->stackUnder ( PARAM_QTYPE(QWidget,params[0]) ), return nullptr; //rtype: void
+			{ q->stackUnder ( PARAM_QTYPE(QWidget,params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="statusTip" )
 	{
@@ -945,39 +952,41 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="ungrabGesture" )
 	{
 		if ( params.size()==1 )
-			q->ungrabGesture ( Qt::GestureType((int)params[0]) ), return nullptr; //rtype: void
+			{ q->ungrabGesture ( Qt::GestureType((int)params[0]) ); return nullptr; } //rtype: void
 	}
 	else if ( name=="unsetCursor" )
 	{
 		if ( params.size()==0 )
-			q->unsetCursor (), return nullptr; //rtype: void
+			{ q->unsetCursor (); return nullptr; } //rtype: void
 	}
 	else if ( name=="unsetLayoutDirection" )
 	{
 		if ( params.size()==0 )
-			q->unsetLayoutDirection (), return nullptr; //rtype: void
+			{ q->unsetLayoutDirection (); return nullptr; } //rtype: void
 	}
 	else if ( name=="unsetLocale" )
 	{
 		if ( params.size()==0 )
-			q->unsetLocale (), return nullptr; //rtype: void
+			{ q->unsetLocale (); return nullptr; } //rtype: void
 	}
 	else if ( name=="update" )
 	{
-		if ( params.size()==1 ) //competition (2)
+		if ( params.size()==0 )
+			{ q->update (); return nullptr; } //rtype: void
+		else if ( params.size()==1 ) //competition (2)
 		{
 			 if ( params[0].type()==Php::Type::Object and GET_CLASS(params[0])=="QRect" )
-				q->update ( QRect(params[0]) ), return nullptr; //rtype: void
+				{ q->update ( QRect(params[0]) ); return nullptr; } //rtype: void
 			 else if ( params[0].type()==Php::Type::Object and GET_CLASS(params[0])=="QRegion" )
-				q->update ( QRegion(params[0]) ), return nullptr; //rtype: void
+				{ q->update ( QRegion(params[0]) ); return nullptr; } //rtype: void
 		}
 		else if ( params.size()==4 )
-			q->update ( (int)params[0], (int)params[1], (int)params[2], (int)params[3] ), return nullptr; //rtype: void
+			{ q->update ( (int)params[0], (int)params[1], (int)params[2], (int)params[3] ); return nullptr; } //rtype: void
 	}
 	else if ( name=="updateGeometry" )
 	{
 		if ( params.size()==0 )
-			q->updateGeometry (), return nullptr; //rtype: void
+			{ q->updateGeometry (); return nullptr; } //rtype: void
 	}
 	else if ( name=="updatesEnabled" )
 	{
@@ -1002,7 +1011,7 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="winId" )
 	{
 		if ( params.size()==0 )
-			return WId(q->winId ()); //rtype: WId
+			return int(q->winId ()); //rtype: WId
 	}
 	else if ( name=="window" )
 	{
@@ -1017,7 +1026,7 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="windowFlags" )
 	{
 		if ( params.size()==0 )
-			return Qt::WindowFlags(q->windowFlags ()); //rtype: Qt::WindowFlags
+			return int(q->windowFlags ()); //rtype: Qt::WindowFlags
 	}
 	else if ( name=="windowIcon" )
 	{
@@ -1032,7 +1041,7 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="windowModality" )
 	{
 		if ( params.size()==0 )
-			return Qt::WindowModality(q->windowModality ()); //rtype: Qt::WindowModality
+			return int(q->windowModality ()); //rtype: Qt::WindowModality
 	}
 	else if ( name=="windowOpacity" )
 	{
@@ -1047,7 +1056,7 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="windowState" )
 	{
 		if ( params.size()==0 )
-			return Qt::WindowStates(q->windowState ()); //rtype: Qt::WindowStates
+			return int(q->windowState ()); //rtype: Qt::WindowStates
 	}
 	else if ( name=="windowSurface" )
 	{
@@ -1062,7 +1071,7 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="windowType" )
 	{
 		if ( params.size()==0 )
-			return Qt::WindowType(q->windowType ()); //rtype: Qt::WindowType
+			return int(q->windowType ()); //rtype: Qt::WindowType
 	}
 	else if ( name=="x" )
 	{
@@ -1077,14 +1086,94 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
 	else if ( name=="x11PictureHandle" )
 	{
 		if ( params.size()==0 )
-			return Qt::HANDLE(q->x11PictureHandle ()); //rtype: Qt::HANDLE
+			return int(q->x11PictureHandle ()); //rtype: Qt::HANDLE
 	}
 	else if ( name=="y" )
 	{
 		if ( params.size()==0 )
 			return int(q->y ()); //rtype: int
 	}
-
+	else if ( name=="close" )
+	{
+		if ( params.size()==0 )
+			return bool(q->close ()); //rtype: bool
+	}
+	else if ( name=="hide" )
+	{
+		if ( params.size()==0 )
+			{ q->hide (); return nullptr; } //rtype: void
+	}
+	else if ( name=="lower" )
+	{
+		if ( params.size()==0 )
+			{ q->lower (); return nullptr; } //rtype: void
+	}
+	else if ( name=="raise" )
+	{
+		if ( params.size()==0 )
+			{ q->raise (); return nullptr; } //rtype: void
+	}
+	else if ( name=="setDisabled" )
+	{
+		if ( params.size()==1 )
+			{ q->setDisabled ( (bool)params[0] ); return nullptr; } //rtype: void
+	}
+	else if ( name=="setEnabled" )
+	{
+		if ( params.size()==1 )
+			{ q->setEnabled ( (bool)params[0] ); return nullptr; } //rtype: void
+	}
+	else if ( name=="setHidden" )
+	{
+		if ( params.size()==1 )
+			{ q->setHidden ( (bool)params[0] ); return nullptr; } //rtype: void
+	}
+	else if ( name=="setStyleSheet" )
+	{
+		if ( params.size()==1 )
+			{ q->setStyleSheet ( QString(params[0]) ); return nullptr; } //rtype: void
+	}
+	else if ( name=="setVisible" )
+	{
+		if ( params.size()==1 )
+			{ q->setVisible ( (bool)params[0] ); return nullptr; } //rtype: virtual void
+	}
+	else if ( name=="setWindowModified" )
+	{
+		if ( params.size()==1 )
+			{ q->setWindowModified ( (bool)params[0] ); return nullptr; } //rtype: void
+	}
+	else if ( name=="setWindowTitle" )
+	{
+		if ( params.size()==1 )
+			{ q->setWindowTitle ( QString(params[0]) ); return nullptr; } //rtype: void
+	}
+    */
+	else if ( name=="show" )
+	{
+		if ( params.size()==0 )
+			{ q->show (); return nullptr; } //rtype: void
+	}
+	else if ( name=="showFullScreen" )
+	{
+		if ( params.size()==0 )
+			{ q->showFullScreen (); return nullptr; } //rtype: void
+	}
+	else if ( name=="showMaximized" )
+	{
+		if ( params.size()==0 )
+			{ q->showMaximized (); return nullptr; } //rtype: void
+	}
+	else if ( name=="showMinimized" )
+	{
+		if ( params.size()==0 )
+			{ q->showMinimized (); return nullptr; } //rtype: void
+	}
+	else if ( name=="showNormal" )
+	{
+		if ( params.size()==0 )
+			{ q->showNormal (); return nullptr; } //rtype: void
+	}
 	return PARENT::call(name,params,q);
 }
 Php::Value ME::__callStatic(const char *_name, Php::Parameters &params)

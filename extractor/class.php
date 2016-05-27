@@ -4,7 +4,11 @@ require "config.php";
 $url=qt_doc_url();
 
 
-
+/**
+ * Retrieves a list of all Qt classes and their html file name (keys)
+ * @param  [type] $url [description]
+ * @return [type]      [description]
+ */
 function findClasses($url)
 {
 	$res=curl($url."/classes.html");
@@ -53,7 +57,7 @@ function parseArg($arg)
 	return $a;
 }
 /**
- * Extracts information regarding one class from the HTML docs
+ * Extracts information regarding one Qt class from the HTML docs
  * @param  [type] $class [description]
  * @param  [type] $url   [description]
  * @return [type]        [description]
@@ -69,8 +73,12 @@ function findClass($class,$url)
 	// echo "Parent is: {$parent}",PHP_EOL;
 	if (!preg_match('/<h2 id="public-functions.*?<table(.*?)<\/table>/ims',$res,$rest))
 		return false;
+	if (!preg_match('/<h2 id="public-slots.*?<table(.*?)<\/table>/ims',$res,$rest2))
+		$rest2="";
+	else
+		$rest2=$rest2[1];
 
-	$rest=htmlspecialchars_decode($rest[1]);
+	$rest=htmlspecialchars_decode($rest[1].$rest2);
 	if (!preg_match_all('/<td class=".*?">(.*?)<\/td><td class=".*?"><b><a href="(.*?)">(.*?)<\/a><\/b>(.*?)<\/td>/ims',$rest,$matches,PREG_SET_ORDER))
 		return false;
 	#1 is return type
@@ -234,12 +242,12 @@ function typecastReturn($value,$typeinfo)
 	$typehint=typehint($typeinfo);
 	if ($type=="QString")
 		$out="{$value}.toStdString()";
-	elseif (substr($type,0,5)=="QList")
-		$a="list";
+	elseif ($type=="QList" and isset($typeinfo['template']))
+		$out="{$value}.toStdList()";
 	elseif ($typehint=="String")
 		$a="string";
 	elseif ($typehint=="Numeric")
-		$a=$type;
+		$a="int";
 	elseif ($typehint=="Float")
 		$a=$type;
 	elseif ($typehint=="Bool")
@@ -267,18 +275,19 @@ function generateReturn($methodName,$methodInfo,$argCount)
 {
 	$method=$methodInfo;
 	$code="";
-	if ($method['return']['type']!='void')
-	{
+	$void=($method['return']['type']=='void');
+	if (!$void)
 		$code.="return ";
-	}
+	else
+		$code.= "{ ";
 	// $code.="\t\t\t";
 
 	$value="q->{$methodName} (".prepareArgs($method['args'],$argCount).")";
 	$code.=typecastReturn($value,$method['return']);
-
-	if ($method['return']['type']=="void")
-		$code.=", return nullptr";
 	$code.=";";
+	if ($void)
+		$code.=" return nullptr; }";
+
 	$code.=" //rtype: {$method['return']['rawtype']}";
 	return $code;
 }
@@ -433,7 +442,7 @@ function generateClassWrapper($class)
 // var_dump($r);
 // findClass("Q3Action","$url/q3action.html");
 // findClass("Q3Http","$url/q3http.html");
-// $r=findClass("QWidget","$url/qwidget.html");
+$r=findClass("QWidget","$url/qwidget.html");
 // generateWrapper("QWidget");
 
 generateClassWrapper("QWidget");

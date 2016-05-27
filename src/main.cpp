@@ -25,6 +25,7 @@ extern "C" {
         AddClass(QWidget);
         AddClass(QLabel);
         AddClass(QPushButton);
+        AddClass(QLayout);
         AddClass(QVBoxLayout);
         AddClass(QApplication);
         // Php::Class<QNAME(QObject)> qobject("QObject");
