@@ -20,6 +20,7 @@ extern "C" {
         // create static instance of the extension object
         static Php::Extension PHPQtNg("PHPQtNg", "1.0");
 
+        PHPQtNg.add("connect", dynamicConnect);
         // description of the class so that PHP knows which methods are accessible
         AddClass(QObject);
         AddClass(QWidget);

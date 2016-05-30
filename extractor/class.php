@@ -18,7 +18,6 @@ function findClasses($url)
 		$classes[$match[1]]=$match[2];
 	file_put_contents("out/classes.txt",'<'.'?php return'.PHP_EOL.var_export($classes,true).";");
 }
-
 /**
  * Converts a string arg representation into an array of arg parts
  * @param  [type] $arg [description]
@@ -442,7 +441,7 @@ function generateClassWrapper($class)
 // var_dump($r);
 // findClass("Q3Action","$url/q3action.html");
 // findClass("Q3Http","$url/q3http.html");
-$r=findClass("QWidget","$url/qwidget.html");
+// $r=findClass("QWidget","$url/qwidget.html");
 // generateWrapper("QWidget");
 
-generateClassWrapper("QWidget");
+// generateClassWrapper("QWidget");

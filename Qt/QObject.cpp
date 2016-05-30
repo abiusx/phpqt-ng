@@ -27,13 +27,11 @@ Php::Value ME::call(const string name, Php::Parameters &params, QtClass *q)
         QObject *sender=PARAM_QOBJECT(params[0]);
         QObject *receiver=PARAM_QOBJECT(params[2]);
         string sender_signal=params[1];
-        sender_signal="2"+sender_signal;
+        sender_signal=SIGNAL_PREFIX+sender_signal;
         string receiver_slot=params[3];
-        receiver_slot="1"+receiver_slot;
-        if (sender_signal.substr(sender_signal.size()-2,2)!="()")
-            sender_signal+="()";
-        if (receiver_slot.substr(receiver_slot.size()-2,2)!="()")
-            receiver_slot+="()";
+        receiver_slot=SLOT_PREFIX+receiver_slot;
+        sender_signal=normalizeSignalOrSlot(sender_signal);
+        receiver_slot=normalizeSignalOrSlot(receiver_slot);
         return (bool)(q->connect(sender,sender_signal.c_str(),receiver,receiver_slot.c_str()));
     }
     //todo: with 3 params, consider (q) the first

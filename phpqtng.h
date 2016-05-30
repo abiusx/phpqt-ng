@@ -6,19 +6,9 @@ using namespace std;
 #include <phpcpp.h>
 #include <QDebug>
 
-class MethodNotFound: public exception {
-    public:
-    /**
-     *  Constructor
-     */
-    MethodNotFound() : std::exception() {}
-    
-    /**
-     *  Destructor
-     */
-    virtual ~MethodNotFound() throw() {}
-};
-
+#define SLOT_PREFIX "1"
+#define SIGNAL_PREFIX "2"
+string normalizeSignalOrSlot(string signal_or_slot);
 
 #define CONCAT(x,y) x##y
 #define QNAME(x) CONCAT(Qt_,x)
@@ -80,6 +70,20 @@ public: \
 
 #define PHPQTNG_CLASS_STUB(QtClass)  PHPQTNG_CLASS(QtClass) };
 
+// class MethodNotFound: public exception {
+//     public:
+//     /**
+//      *  Constructor
+//      */
+//     MethodNotFound() : std::exception() {}
+    
+//     /**
+//      *  Destructor
+//      */
+//     virtual ~MethodNotFound() throw() {}
+// };
+
+Php::Value dynamicConnect(Php::Parameters &params);
 
 class PHPQtNgBase:public Php::Base
 {

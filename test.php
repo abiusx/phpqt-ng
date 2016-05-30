@@ -1,5 +1,5 @@
 <?php
-var_dump(class_exists("QApplication"));
+assert(class_exists("QApplication"));
 
 //TODO: since PhpQtNg classes are not inherited from each other,
 //we can't call the parent call,set,get to handle "keys" that correspond
@@ -19,8 +19,11 @@ $layout->addWidget($label);
 $layout->addWidget($button);
 $r=$button->connect($button,"clicked()",$app,"quit()");
 var_dump($r);
-$r=$button->connect($button,"clicked()",$app,"quit()");
+$r=connect($button,"clicked",function(){echo "hello there!\n";});
 var_dump($r);
+$r=connect($button,"clicked",'f',[1,2,3,'k'=>'v']);
+var_dump($r);
+
 
 $window = new QWidget;
 $window->setLayout($layout);
@@ -30,22 +33,9 @@ $app->exec();
 
 echo "all done";
 
-/*
- 6
- 7          QLabel *textEdit = new QLabel;
- 8          QPushButton *quitButton = new QPushButton("&Quit");
- 9
-10          QObject::connect(quitButton, SIGNAL(clicked()), qApp, SLOT(quit()));
-11
-12          QVBoxLayout *layout = new QVBoxLayout;
-13          layout->addWidget(textEdit);
-14          layout->addWidget(quitButton);
-15
-16          QWidget window;
-17          window.setLayout(layout);
-18
-19          window.show();
-20
-21          return app.exec();
+function f($args)
+{
+	echo "F called with: ";
+	var_dump($args);
+}
 
-*/
